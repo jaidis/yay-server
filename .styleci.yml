@@ -1,0 +1,7 @@
+risky: false
+finder:
+  name: 
+    - "application/controllers/api/Test.php"
+    - "application/core/MY_Controller.php"
+  path:
+    - "tests"
