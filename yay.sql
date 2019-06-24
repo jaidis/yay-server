@@ -21,8 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `yay`
 --
--- DROP DATABASE IF EXISTS `yay`;
--- CREATE DATABASE `yay`;
+DROP DATABASE IF EXISTS `yay`;
+CREATE DATABASE `yay`;
 USE `yay`;
 
 -- --------------------------------------------------------
@@ -113,9 +113,9 @@ CREATE TABLE `restaurants` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 INSERT INTO `restaurants` (id, logo, name, description, location, province, coordenateX, coordenateY, transport_nearby, maximum_capacity, price, score, promoted_content)
-VALUES (1, "https://i.imgur.com/heRdgVk.jpg", "Pijo's Restaurant", "Restaurante pijo que te cobra un dineral", "Calle de la Proximidad, Local 85, Granada", "Granada", "37.1492398", "-3.6075692", "Metropolitano: Parada parque tecnológico de la salud", 50, 19.99, 80, 1),
+VALUES (1, "https://i.imgur.com/heRdgVk.jpg", "Pijo's Restaurant", "Restaurante pijo que te cobra un dineral", "Calle de la Proximidad, Local 85, Granada", "Granada", "37.1492398", "-3.6075692", "Metropolitano: Parada parque tecnológico de la salud", 50, 19.99, 80, 0),
 (2, "https://i.imgur.com/T0kor46.jpg", "Burguer's Restaurant", "Restaurante de hamburguesas que se derriten en la boca", "Calle de la Iluminación, Local 100, Granada", "Granada", "37.1492398", "-3.6075692", "Parada bus: 1, 5, 7", 50, 29.99, 90, 1),
-(3, "https://i.imgur.com/iKwcMRI.jpg", "Casa di Pepe", "Platos elaborados de forma artesanal con recetas las mejores recetas de Modena", "Calle espiritual, Local 1, Granada", "Granada", "37.1492398", "-3.6075692", "Parada taxi a 100 metros", 30, 14.95, 70, 0);
+(3, "https://i.imgur.com/iKwcMRI.jpg", "Casa di Pepe", "Platos elaborados de forma artesanal con recetas las mejores recetas de Modena", "Calle espiritual, Local 1, Granada", "Granada", "37.1492398", "-3.6075692", "Parada taxi a 100 metros", 30, 14.95, 70, 1);
 
 --
 -- Indices de la tabla `restaurants`
@@ -160,7 +160,7 @@ ALTER TABLE `restaurants_categories`
   ADD CONSTRAINT `restaurants_categories_ibfk_1` FOREIGN KEY (`id_category`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `restaurants_categories_ibfk_2` FOREIGN KEY (`id_restaurant`) REFERENCES `restaurants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   MODIFY `id_auto` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 1;
+  AUTO_INCREMENT = 3;
 
 -- --------------------------------------------------------
 
@@ -217,8 +217,11 @@ CREATE TABLE `restaurants_salads` (
 INSERT INTO `restaurants_salads` (id, name, price, id_restaurant)
 VALUES
   (1, "Ensalada teriyaki con frutas del bosque", 49.99, 1),
-  (2, "Ensala mixta", 8.95, 1),
-  (3, "Ensalada de verano", 11.95, 1);
+  (2, "Ensalada mixta", 8.95, 1),
+  (3, "Ensalada de verano", 11.95, 1),
+  (4, "Ensalada de la casa", 9.99, 2),
+  (5, "Ensalada con pollo", 8.95, 2),
+  (6, "Ensalada pavo con salsa césar", 11.95, 2);
 
 --
 -- Indices de la tabla `restaurants_salads`
@@ -232,7 +235,7 @@ ALTER TABLE `restaurants_salads`
 ALTER TABLE `restaurants_salads`
   ADD CONSTRAINT `restaurants_salads_ibfk_1` FOREIGN KEY (`id_restaurant`) REFERENCES `restaurants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 3;
+  AUTO_INCREMENT = 6;
 
 -- --------------------------------------------------------
 
@@ -284,7 +287,10 @@ INSERT INTO `restaurants_meats` (id, name, price, id_restaurant)
 VALUES
   (1, "Carne de toro", 18.95, 1),
   (2, "Carne de caballo", 22.95, 1),
-  (3, "Carne de venado", 25.95, 1);
+  (3, "Carne de venado", 25.95, 1),
+  (4, "Hamburguesa de toro", 18.95, 2),
+  (5, "Hamburguesa de buey", 22.95, 2),
+  (6, "Hamburguesa sabor de Texas", 25.95, 2);
 
 --
 -- Indices de la tabla `restaurants_meats`
@@ -298,7 +304,7 @@ ALTER TABLE `restaurants_meats`
 ALTER TABLE `restaurants_meats`
   ADD CONSTRAINT `restaurants_meats_ibfk_1` FOREIGN KEY (`id_restaurant`) REFERENCES `restaurants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 3;
+  AUTO_INCREMENT = 6;
 
 -- --------------------------------------------------------
 
@@ -382,7 +388,11 @@ CREATE TABLE `restaurants_schedule` (
 INSERT INTO `restaurants_schedule` (id, name, description, id_restaurant)
 VALUES
   (1, "L-V", "08:00 - 24:00", 1),
-  (2, "S", "12:00 - 02:00", 1);
+  (2, "S", "12:00 - 02:00", 1),
+  (3, "L-V", "13:00 - 23:00", 2),
+  (4, "S", "20:00 - 02:00", 2),
+  (5, "L-V", "12:00 - 24:00", 3),
+  (6, "S", "12:00 - 02:00", 3);
 
 --
 -- Indices de la tabla `restaurants_schedule`
@@ -396,7 +406,7 @@ ALTER TABLE `restaurants_schedule`
 ALTER TABLE `restaurants_schedule`
   ADD CONSTRAINT `restaurants_schedule_ibfk_1` FOREIGN KEY (`id_restaurant`) REFERENCES `restaurants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 2;
+  AUTO_INCREMENT = 6;
 
 -- --------------------------------------------------------
 
@@ -422,7 +432,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (id, email, password, first_name, last_name, phone_number, token)
 VALUES
-  (1, 'manmunlop@gmail.com', "$2y$10$9hV2lU0QUvPJKK9vfuiI0edGbZOk5LKR.Mf7dyzpYh8BQqZtX5lFi", "Manuel", "Muñoz", "+34640625633", "ec0fc94cae0e9f5c505951d140cdcb2a756af12f687c7a5bde");
+  (1, 'manmunlop@gmail.com', "$2y$10$9hV2lU0QUvPJKK9vfuiI0edGbZOk5LKR.Mf7dyzpYh8BQqZtX5lFi", "Manuel", "Muñoz", "+34600112233", "ec0fc94cae0e9f5c505951d140cdcb2a756af12f687c7a5bde");
 
 --
 -- Indices de la tabla `users`
